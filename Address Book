@@ -1,0 +1,96 @@
+package addressbook
+import java.util.*;
+
+class Contact {
+    private String name;
+    private String phoneNumber;
+
+    public Contact(String name, String phoneNumber) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+}
+
+public class AddressBook {
+    private List<Contact> contacts;
+
+    public AddressBook() {
+        contacts = new ArrayList<>();
+    }
+
+    public void addContact(Contact contact) {
+        contacts.add(contact);
+    }
+
+    public Contact findContact(String name) {
+        for (Contact contact : contacts) {
+            if (contact.getName().equalsIgnoreCase(name)) {
+                return contact;
+            }
+        }
+        return null;
+    }
+
+    public void displayAllContacts() {
+        System.out.println("All Contacts:");
+        for (Contact contact : contacts) {
+            System.out.println(contact.getName() + ": " + contact.getPhoneNumber());
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        AddressBook addressBook = new AddressBook();
+
+        System.out.println("Welcome to the Address Book!");
+
+        boolean running = true;
+        while (running) {
+            System.out.println("\n1. Add Contact\n2. Find Contact\n3. Display All Contacts\n4. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline character
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter contact name: ");
+                    String name = scanner.nextLine();
+                    System.out.print("Enter contact phone number: ");
+                    String phoneNumber = scanner.nextLine();
+                    addressBook.addContact(new Contact(name, phoneNumber));
+                    System.out.println("Contact added successfully!");
+                    break;
+                case 2:
+                    System.out.print("Enter contact name to search: ");
+                    String searchName = scanner.nextLine();
+                    Contact foundContact = addressBook.findContact(searchName);
+                    if (foundContact != null) {
+                        System.out.println("Contact found:");
+                        System.out.println("Name: " + foundContact.getName() + ", Phone Number: " + foundContact.getPhoneNumber());
+                    } else {
+                        System.out.println("Contact not found.");
+                    }
+                    break;
+                case 3:
+                    addressBook.displayAllContacts();
+                    break;
+                case 4:
+                    running = false;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+        }
+
+        System.out.println("Exiting the Address Book. Thank you!");
+        scanner.close();
+    }
+}
